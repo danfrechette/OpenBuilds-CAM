@@ -29,6 +29,18 @@
 		<link rel="manifest" href="/manifest.json">
 	</head>
 
+	<style>
+		.geo-slot {
+			flex: 1;
+			padding: 5px 5px;
+			margin: 2px 4;
+			outline: none;
+			max-width: 30px;
+			min-width: 30px;
+		}
+
+	</style>
+
 	<body>
 		<!-- container1 Drog Container wraps all other content -->
 		<div id="container1">
@@ -125,6 +137,40 @@
 													</span>
 													<span class="caption">Rectangle</span>
 												</button>
+
+											</div>
+											<div class="ribbon-group">
+
+												<button class="ribbon-icon-button" onclick="Metro.dialog.open(' #addShapeRing ');">
+													<span class="icon">
+														<span class="fas fa-circle-notch"></span>
+													</span>
+													<span class="caption">Ring</span>
+												</button>
+												<br>
+
+												<button class="ribbon-icon-button" onclick="Metro.dialog.open(' #addShapeSlot ');">
+													<span class="geo-slot icon"><img alt="slot" class="" src="images/slot.svg" width="16px" height="16px"></img></span>
+													<span class="caption">Slot</span>
+
+												</button>
+												<br>
+
+												<button class="ribbon-icon-button" onclick="Metro.dialog.open(' #addShapeStar ');">
+													<span class="icon">
+														<span class="far fa-star"></span>
+													</span>
+													<span class="caption">Star</span>
+												</button>
+
+											</div>
+
+											<div class="ribbon-group">
+												<button class="ribbon-icon-button" onclick="Metro.dialog.open(' #addShapeEllipse ');">
+													<span class="geo-slot icon"><img alt="slot" class="" src="images/ellipse.svg" width="16px" height="16px"></img></span>
+													<span class="caption">Ellipse</span>
+												</button>
+												<br>
 											</div>
 											<span class="title">Insert</span>
 										</div>
