@@ -52,7 +52,7 @@ $(document).ready(function() {
   // Check if Driver is running
   var DriverCheckinterval = setInterval(function() {
     checkIfDriverIsInstalled();
-  }, 10000000);  / WAS 1000 Reset for the production version or prior to pull request (danfrechette)
+  }, 10000000);  // WAS 1000 Reset for the production version or prior to pull request (danfrechette)
   getAvailableDriverVersion()
 
 });

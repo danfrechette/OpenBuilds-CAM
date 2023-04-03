@@ -18,7 +18,7 @@ $(document).ready(function() {
   initLocalStorage();
   init3D();
   animate();
-  errorHandlerJS();
+  //errorHandlerJS(); // Disabled Reset for Production (danfrechette)
   initTree();
   initAdvancedCAM();
   initMouseSelect();
@@ -97,31 +97,25 @@ $(document).ready(function() {
   }).fail(function() {
     loadLastClosedOnPageload()
   });
-
-
-
-
-
-
-
-
 }); // End of document.ready
 
-// Error handling
-errorHandlerJS = function() {
-  // window.onerror = function(errmessage, url, line) {
-  window.onerror = function(errmessage, url, line, colno, error) {
-    // console.log(error)
-    errmessage = errmessage.replace(/^Uncaught /i, "");
-    //alert(message+"\n\n("+url+" line "+line+")");
-    console.log(errmessage + "\n\n(" + url + " line " + line + ")");
-    if (errmessage.indexOf('updateMatrixWorld') == -1) { // Ignoring threejs/google api messages, add more || as discovered
-      var message = `An unknown error occured:` + errmessage
-      Metro.toast.create(message, null, 10000, 'bg-red');
-      // printLog(errmessage + "\n(" + url + " on line " + line + ")", errorcolor);
-    }
-  };
-};
+
+// Disabled Reset for Production (danfrechette)
+// // Error handling
+// errorHandlerJS = function() {
+//   // window.onerror = function(errmessage, url, line) {
+//   window.onerror = function(errmessage, url, line, colno, error) {
+//     // console.log(error)
+//     errmessage = errmessage.replace(/^Uncaught /i, "");
+//     //alert(message+"\n\n("+url+" line "+line+")");
+//     console.log(errmessage + "\n\n(" + url + " line " + line + ")");
+//     if (errmessage.indexOf('updateMatrixWorld') == -1) { // Ignoring threejs/google api messages, add more || as discovered
+//       var message = `An unknown error occured:` + errmessage
+//       Metro.toast.create(message, null, 10000, 'bg-red');
+//       // printLog(errmessage + "\n(" + url + " on line " + line + ")", errorcolor);
+//     }
+//   };
+// };
 
 // Function to execute when opening file (triggered by fileOpen.addEventListener('change', readFile, false); )
 function readFile(evt) {

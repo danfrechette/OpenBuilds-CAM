@@ -1,3 +1,5 @@
+// (danfrechette) {'view-docs': $("#view-docs").is(":checked"), 'view-toolpath': $("#view-toolpath").is(":checked"), 'view-gcode': $("#view-gcode").is(":checked")}
+
 function ConfirmDelete() {
   var x = confirm("Are you sure you want to restore to factory defaults?");
   if (x) {

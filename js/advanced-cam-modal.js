@@ -166,6 +166,13 @@ function metadata_render(i, items, tlprof=false){
   return str;
 };
 
+function metadata_ApplyValues(i, items, userData){
+  items.forEach( function (a){
+    var elem = metadata[a]
+    $(`#${elem.id}${i}`).val[userData[a]];
+  });
+}
+
 function typeofOperation(newval, objectseq) {
   if (newval == "... Select Operation ...") {
     noMode(objectseq);
@@ -395,7 +402,6 @@ function setupJob(i) {
 
   template2 += metadata_render(i, metadata_Std);
   template2 += `</table>`;
-
   template2 +=  `<div><input type="checkbox" data-role="switch" data-caption="Advanced Settings" id="advanced${i}" objectseq="${i}" ></div>`
   template2 +=  `<div data-role="collapse" data-collapsed="true" data-toggle-element="#advanced${i}" id="collapsediv${i}">`
   template2 +=  `<table class="table striped compact">`
@@ -457,30 +463,39 @@ function setupJob(i) {
     $('#toolpathWarnings').html(template3)
   }
   if (toolpathsInScene[i].userData.camOperation) {
-    $('#tPasses' + i).val(toolpathsInScene[i].userData.camPasses);
+    var CamIDs = ['camPasses', 'camToolDia', 'camStepover', 'camZClearance', 'camZStart', 'camDragOffset', 'camSpotSize', 'camFillAngle', 'camLaserPower',
+                  'camZStep', 'camZDepth', 'camFeedrate', 'camPlungerate', 'camPlasmaKerf', 'camPlasmaZHeight', 'camPlasmaPierceHeight', 'camPlasmaPierceDelay',
+                  'camPlasmaLeadinDist', 'camTabDepth', 'camTabWidth', 'camTabSpace', 'camPenUp', 'camPenDown'];
+
+    metadata_ApplyValues(i, CamIDs , toolpathsInScene[i].userData)
+
     $('#toperation' + i).val(toolpathsInScene[i].userData.camOperation).prop('selected', true)
-    $('#ttooldia' + i).val(toolpathsInScene[i].userData.camToolDia);
-    $('#tstepover' + i).val(toolpathsInScene[i].userData.camStepover);
-    $('#tclearanceHeight' + i).val(toolpathsInScene[i].userData.camZClearance);
-    $('#tstartHeight' + i).val(toolpathsInScene[i].userData.camZStart);
-    $('#tdragoffset' + i).val(toolpathsInScene[i].userData.camDragOffset);
-    $('#tspotsize' + i).val(toolpathsInScene[i].userData.camSpotSize);
-    $('#tfillAngle' + i).val(toolpathsInScene[i].userData.camFillAngle);
-    $('#tpwr' + i).val(toolpathsInScene[i].userData.camLaserPower);
-    $('#tzstep' + i).val(toolpathsInScene[i].userData.camZStep);
-    $('#tzdepth' + i).val(toolpathsInScene[i].userData.camZDepth);
-    $('#tspeed' + i).val(toolpathsInScene[i].userData.camFeedrate);
-    $('#tplungespeed' + i).val(toolpathsInScene[i].userData.camPlungerate);
-    $('#tplasmakerf' + i).val(toolpathsInScene[i].userData.camPlasmaKerf);
-    $('#tplasmazheight' + i).val(toolpathsInScene[i].userData.camPlasmaZHeight);
-    $('#tplasmapierceheight' + i).val(toolpathsInScene[i].userData.camPlasmaPierceHeight);
-    $('#tplasmapiercedelay' + i).val(toolpathsInScene[i].userData.camPlasmaPierceDelay);
-    $('#tplasmaleadin' + i).val(toolpathsInScene[i].userData.camPlasmaLeadinDist);
-    $('#tabdepth' + i).val(toolpathsInScene[i].userData.camTabDepth);
-    $('#tabWidth' + i).val(toolpathsInScene[i].userData.camTabWidth);
-    $('#tabSpace' + i).val(toolpathsInScene[i].userData.camTabSpace);
-    $('#tpenup' + i).val(toolpathsInScene[i].userData.camPenUp);
-    $('#tpendown' + i).val(toolpathsInScene[i].userData.camPenDown);
+
+    // $('#tPasses' + i).val(toolpathsInScene[i].userData.camPasses);
+    // $('#toperation' + i).val(toolpathsInScene[i].userData.camOperation).prop('selected', true)
+    // $('#ttooldia' + i).val(toolpathsInScene[i].userData.camToolDia);
+    // $('#tstepover' + i).val(toolpathsInScene[i].userData.camStepover);
+    // $('#tclearanceHeight' + i).val(toolpathsInScene[i].userData.camZClearance);
+    // $('#tstartHeight' + i).val(toolpathsInScene[i].userData.camZStart);
+    // $('#tdragoffset' + i).val(toolpathsInScene[i].userData.camDragOffset);
+    // $('#tspotsize' + i).val(toolpathsInScene[i].userData.camSpotSize);
+    // $('#tfillAngle' + i).val(toolpathsInScene[i].userData.camFillAngle);
+    // $('#tpwr' + i).val(toolpathsInScene[i].userData.camLaserPower);
+    // $('#tzstep' + i).val(toolpathsInScene[i].userData.camZStep);
+    // $('#tzdepth' + i).val(toolpathsInScene[i].userData.camZDepth);
+    // $('#tspeed' + i).val(toolpathsInScene[i].userData.camFeedrate);
+    // $('#tplungespeed' + i).val(toolpathsInScene[i].userData.camPlungerate);
+    // $('#tplasmakerf' + i).val(toolpathsInScene[i].userData.camPlasmaKerf);
+    // $('#tplasmazheight' + i).val(toolpathsInScene[i].userData.camPlasmaZHeight);
+    // $('#tplasmapierceheight' + i).val(toolpathsInScene[i].userData.camPlasmaPierceHeight);
+    // $('#tplasmapiercedelay' + i).val(toolpathsInScene[i].userData.camPlasmaPierceDelay);
+    // $('#tplasmaleadin' + i).val(toolpathsInScene[i].userData.camPlasmaLeadinDist);
+    // $('#tabdepth' + i).val(toolpathsInScene[i].userData.camTabDepth);
+    // $('#tabWidth' + i).val(toolpathsInScene[i].userData.camTabWidth);
+    // $('#tabSpace' + i).val(toolpathsInScene[i].userData.camTabSpace);
+    // $('#tpenup' + i).val(toolpathsInScene[i].userData.camPenUp);
+    // $('#tpendown' + i).val(toolpathsInScene[i].userData.camPenDown);
+
     if (toolpathsInScene[i].userData.tRampPlunge) {
       $('#tRampPlunge' + i).val(toolpathsInScene[i].userData.tRampPlunge).prop('selected', true);
     } else {
@@ -513,13 +528,47 @@ function setupJob(i) {
                           'camPlasmaPierceHeight', 'camPlasmaPierceDelay', 'camPlasmaZHeight', 'camPlasmaLeadinDist',
                           'camPlasmaIHS', 'camPenUp', 'camPenDown', 'camDirection','camPasses', 'camZStart'];
 
-      Lastused_Std.forEach( function (a){
-        elem = metadata[a]
-        $(`#${elem.id}${i}`).val[lastused[a]];
-      });
+      metadata_ApplyValues(i, Lastused_Std , lastused)
+
     }
+
+    // if (lastused) {
+    //     // console.log(lastused)
+    //     $('#ttooldia' + i).val(lastused.camToolDia);
+    //     $('#tstepover' + i).val(lastused.camStepover);
+    //     $('#tclearanceHeight' + i).val(lastused.camZClearance);
+    //     $('#tdragoffset' + i).val(lastused.camDragOffset);
+    //     $('#tspotsize' + i).val(lastused.camSpotSize);
+    //     $('#tfillAngle' + i).val(lastused.camFillAngle);
+    //     $('#tpwr' + i).val(lastused.camLaserPower);
+    //     $('#tzstep' + i).val(lastused.camZStep);
+    //     $('#tzdepth' + i).val(lastused.camZDepth);
+    //     $('#tspeed' + i).val(lastused.camFeedrate);
+    //     $('#tplungespeed' + i).val(lastused.camPlungerate);
+    //     $('#tplasmakerf' + i).val(lastused.camPlasmaKerf);
+    //     $('#tplasmazheight' + i).val(lastused.camPlasmaZHeight);
+    //     $('#tplasmapierceheight' + i).val(lastused.camPlasmaPierceHeight);
+    //     $('#tplasmapiercedelay' + i).val(lastused.camPlasmaPierceDelay);
+    //     $('#tplasmaleadin' + i).val(lastused.camPlasmaLeadinDist);
+    //     $('#tstartHeight' + i).val(lastused.camZStart);
+    //     $('#tPasses' + i).val(lastused.camPasses);
+    //     $('#tplasmaihs' + i).val(lastused.camPlasmaIHS);
+    //     // $('#tunion' + i).val(lastused.camUnion);
+    //     $('#tdirection' + i).val(lastused.camDirection);
+    //     $('#tspotsize' + i).val(lastused.camSpotSize);
+    //     $('#tfillAngle' + i).val(lastused.camFillAngle);
+    //     //$('#tabdepth' + i).val(lastused.camTabDepth);
+    //     //$('#tabWidth' + i).val(lastused.camTabWidth);
+    //     //$('#tabSpace' + i).val(lastused.camTabSpace);
+    //     //$('#tRampPlunge' + i).val(lastused.tRampPlunge);
+    //     $('#tpenup' + i).val(lastused.camPenUp);
+    //     $('#tpendown' + i).val(lastused.camPenDown);
+    // }
   };
 }
+
+
+
 
 function noMode(i) {
   $('.inputcnc').hide();
