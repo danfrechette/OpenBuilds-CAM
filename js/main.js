@@ -1,5 +1,7 @@
 //"use strict";
 console.log("%c%s", "color: #000; background: green; font-size: 24px;", "STARTING...");
+let mymachine = 'localhost' //'mymachine'
+
 // colors for the consolelog
 var msgcolor = '#000000';
 var successcolor = '#00aa00';
@@ -9,9 +11,9 @@ var warncolor = '#ff6600';
 var debug = false;
 var activeObject, fileName, notify;
 
-// Place all document.ready tasks into functions and ONLY run the functions from doument.ready
+// Place all document.ready tasks into functions and ONLY run the functions from document.ready
 $(document).ready(function() {
-  // Intialise
+  // Initialize
   loadSettingsLocal();
   initLocalStorage();
   init3D();
@@ -66,7 +68,7 @@ $(document).ready(function() {
 
 
   // lets see if there's any Workspaces on CONTROL
-  $.get("https://mymachine.openbuilds.com:3001/workspace").done(function(data) {
+  $.get(`https://${mymachine}.openbuilds.com:3001/workspace`).done(function(data) {
     if (isJson(data)) {
       hasWorkspace = true;
       Metro.dialog.create({

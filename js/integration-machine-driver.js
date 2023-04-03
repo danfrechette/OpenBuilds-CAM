@@ -5,7 +5,7 @@ var installedDriver = 'not detected'
 
 function checkIfDriverIsInstalled() {
   // if (!alreadyDetected) {
-  var url = "https://mymachine.openbuilds.com:3001/api/version"
+  var url = `https://${mymachine}.openbuilds.com:3001/api/version`
   $.ajax({
     url: url,
     type: 'GET',
@@ -52,7 +52,7 @@ $(document).ready(function() {
   // Check if Driver is running
   var DriverCheckinterval = setInterval(function() {
     checkIfDriverIsInstalled();
-  }, 1000);
+  }, 10000000);  / WAS 1000 Reset for the production version or prior to pull request (danfrechette)
   getAvailableDriverVersion()
 
 });
@@ -176,7 +176,7 @@ function JSClock() {
 }
 
 function activateDriver() {
-  var url = "https://mymachine.openbuilds.com:3001/activate"
+  var url = `https://${mymachine}.openbuilds.com:3001/activate`
   $.ajax({
     type: 'GET',
     url: url,
@@ -198,8 +198,8 @@ function sendGcodeToMyMachine() {
     var blob = new Blob([textToWrite], {
       type: "text/plain"
     });
-    console.log("Sending ", blob, " to https://mymachine.openbuilds.com:3001/")
-    var url = "https://mymachine.openbuilds.com:3001/upload"
+    console.log("Sending ", blob, ` to https://${mymachine}.openbuilds.com:3001/`)
+    var url = `https://${mymachine}.openbuilds.com:3001/upload`
     var fd = new FormData();
     // fd.append('fname', 'file.gcode');
     var time = new Date();

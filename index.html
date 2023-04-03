@@ -47,6 +47,7 @@
 							<nav data-role="ribbonmenu">
 								<ul class="tabs-holder">
 									<li><a href="#section-workspace">Workspace</a></li>
+									<li><a href="#toolprf_SectionToolingProfiles">Tool Profiles</a></li>
 									<li><a href="#section-settings">Settings</a></li>
 								</ul>
 								<div class="content-holder">
@@ -60,7 +61,7 @@
 													<span class="caption">&nbsp;&nbsp;&nbsp;File...&nbsp;&nbsp;&nbsp;</span>
 												</button>
 												<ul class="ribbon-dropdown" data-role="dropdown" data-duration="100">
-													<li class="btn-file"><a href="#"></span><span class="far fa-folder-open fg-amber fa-fw"></span> Open Drawing File (.DXF, .SVG, Image, Gerber, Excellon)</a><input id="file" type="file"
+													<li class="btn-file"><a href="#"><!-- /span--><span class="far fa-folder-open fg-amber fa-fw"></span> Open Drawing File (.DXF, .SVG, Image, Gerber, Excellon)</a><input id="file" type="file"
 															accept=".svg,.dxf,.gif,.jpg,.jpeg,.tiff,.png,.bmp,.gbl,.gtl,.gbr,.dri,.txt" multiple /></li>
 													<li class="divider"></li>
 													<li class="" onclick="storeUndo(true); objectsInScene.length = 0; toolpathsInScene.length = 0; trashGcode(); fillTree(); $('.workspaceTitle').html('');"><a href="#"> <span class="far fa-file fa-fw"></span> New (Empty)
@@ -236,6 +237,16 @@
 										</div>
 									</div>
 
+									<div class="section" id="toolprf_SectionToolingProfiles">
+										<div class="group">
+											<button class="ribbon-button" onclick="noMode(); toolprf_PopulateProfileNameDropdownList(); toolprf_ToggleActiveProfileAttributes(); Metro.dialog.open('#toolprf_ModalToolingProfiles');">
+												<span class="icon">
+													<span class="fa fa-fw fa-toolbox fg-amber"></span>
+												</span>
+												<span class="caption">Tooling<br/> Profiles</span>
+											</button>
+										</div>
+									</div>
 								</div>
 							</nav>
 							<div id="renderArea">
