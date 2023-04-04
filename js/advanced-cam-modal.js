@@ -97,7 +97,7 @@ function profTmpl_CutType(i, elem, tlprof=false){
         <select
           id="${elem.id}${i}"
           title="Type of Cut"
-          class="cam-form-field cam-form-field-right active-border camOperationSelectXXXX"
+          class="cam-form-field cam-form-field-right active-border camOperationSelect"
           objectseq=""
           style="width: 100%; border-left: solid 1px #ccc; padding: 0px; padding-left: 10px;"
         >
@@ -346,16 +346,16 @@ function updateCamUserData(i) {
     try {
       var elem = metadata[a]
       var val = $(`#${elem.id}${i}`).val();
-
+      console.log(i, a, val);
       switch (a) {
         case 'tOpName':
           toolpathsInScene[i].name = val;
           break;
         case 'advanced':
-          toolpathsInScene[i].advanced = $(`#${elem.id}${i}`).is(":checked");
+          toolpathsInScene[i].userData.advanced = $(`#${elem.id}${i}`).is(":checked");
           break;
         default:
-          toolpathsInScene[i].name = val;
+          toolpathsInScene[i].userData[a] = val;
       }
     }
     catch(error){ console.log(error); }
@@ -427,7 +427,7 @@ function setupJob(i) {
       </tr>
       <tr>
         <td>
-          <button type="button" id="previewToolpathBtn" style="width: 200px;" class="button success" onclick="toolpathPreview(` + i + `); fillTree();">Apply and Preview Toolpath </button>
+          <button type="button" id="previewToolpathBtn" style="width: 200px;" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button>
         </td>
         <td>
           <button class="button js-dialog-close" style="width: 200px;">Close</button>
@@ -504,13 +504,15 @@ function setupJob(i) {
     $('#tplasmaihs' + i).val(toolpathsInScene[i].userData.camPlasmaIHS).prop('selected', true);
     $('#tunion' + i).val(toolpathsInScene[i].userData.camUnion).prop('selected', true);
     $('#tdirection' + i).val(toolpathsInScene[i].userData.camDirection).prop('selected', true);
+    debugger
     $('#tOpName' + i).val(toolpathsInScene[i].name);
     $('#statusTitle').html('Configure Toolpath: ' + toolpathsInScene[i].userData.camOperation);
     $('#advanced' + i).prop('checked', toolpathsInScene[i].userData.advanced);
+
     if (toolpathsInScene[i].userData.advanced) {
       setTimeout(function() {
-        $('#advanced' + i).prop('checked', true);
-        $('#collapsediv' + i).data("collapse")['expand']()
+        $(`#advanced${i}`).prop('checked', true);
+        $(`#collapsediv${i}`).data("collapse")['expand']()
       }, 200);
     } else {
       setTimeout(function() {
@@ -518,6 +520,7 @@ function setupJob(i) {
         $('#collapsediv' + i).data("collapse")['collapse']()
       }, 200);
     }
+
     typeofOperation(toolpathsInScene[i].userData.camOperation, i);
   } else {
     // if we don't already have an Operation, perhaps we can pull from last-used values to make it easier
