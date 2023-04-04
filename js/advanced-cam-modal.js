@@ -403,9 +403,48 @@ function setupJob(i) {
             <input data-role="input" autofocus type="text" class="cam-form-field cam-form-field-right active-border" value="` + toolpathsInScene[i].name + `" id="tOpName${i}"  objectseq="${i}" min="0" style="text-align: center;">
           </div>
         </td>
-      </tr>
+      </tr>`;
 
+  template2 += metadata_render(i, metadata_Std);
+  template2 += `</table>`;
+  template2 += `<div><input type="checkbox" data-role="switch" data-caption="Advanced Settings" id="advanced${i}" objectseq="${i}" ></div>`
+  template2 += `<div data-role="collapse" data-collapsed="true" data-toggle-element="#advanced${i}" id="collapsediv${i}">`
+  template2 += `<!-- -------------------------------------------------------------------------------------------------------------------- -->`
+  template2 += `<table class="table striped compact">`
+  template2 += metadata_render(i, metadata_Adv);
+  template2 += `</table>`
+  template2 += `<!-- -------------------------------------------------------------------------------------------------------------------- -->`
+  template2 += `</div>`;
+
+  $('#statusBody2').html(template2);
+
+  $('#statusFooter').html(
+    `<table class="table compact">
       <tr>
+        <td>
+          <button class="button secondary" style="width: 200px;" id="toolprf_ID_StoreAsProfile" onclick="toolprf_action_StoreAsProfile()">Store As Profile</button>
+        </td>
+        <td id="toolprf_ID_ApplyProfile">
+          <div  class="input-addon">
+            <button class="button secondary dropdown-toggle" style="width: 200px;" id="toolprf_ButApplyProfile" onclick="toolprf_action_ApplyProfile()">Apply A Profile</button>
+            <ul class="d-menu context drop-shadow" data-role="dropdown" data-duration="100" id="appToolProfilemenu"
+              data-toggle-element="#toolprf_ButApplyProfile" data-role="dropdown" style="width: max-content; display: block;">
+            </ul>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button type="button" id="previewToolpathBtn" style="width: 200px;" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button>
+        </td>
+        <td>
+          <button class="button js-dialog-close" style="width: 200px;">Close</button>
+        </td>
+      </tr>
+    </table>`
+  );
+
+  var old= `<tr>
         <td>Type of cut: </td>
         <td>
           <div class="input-addon">
@@ -743,8 +782,9 @@ function setupJob(i) {
 
     </table>
   </div>`
-  $('#statusBody2').html(template2);
-  $('#statusFooter').html(`<button type="button" id="previewToolpathBtn" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button><button class="button js-dialog-close">Close</button>`);
+
+  //$('#statusFooter').html(`<button type="button" id="previewToolpathBtn" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button><button class="button js-dialog-close">Close</button>`);
+
   noMode(); // Default to NOOP
   $("#tOpName" + i).focus()
   Metro.init();
