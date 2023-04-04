@@ -211,7 +211,12 @@ function typeofOperation(newval, objectseq) {
   } else if (newval == "Pen Plotter: (lines fill)") {
     penRasterMode(objectseq);
   }
+  else{
+    console.log("No condition was found...... updateCamUserData should not trigger fix it...")
+  }
+
   updateCamUserData(objectseq);
+
 }
 
 function initAdvancedCAM() {
@@ -346,7 +351,7 @@ function updateCamUserData(i) {
     try {
       var elem = metadata[a]
       var val = $(`#${elem.id}${i}`).val();
-      console.log(i, a, val);
+
       switch (a) {
         case 'tOpName':
           toolpathsInScene[i].name = val;
@@ -398,48 +403,351 @@ function setupJob(i) {
             <input data-role="input" autofocus type="text" class="cam-form-field cam-form-field-right active-border" value="` + toolpathsInScene[i].name + `" id="tOpName${i}"  objectseq="${i}" min="0" style="text-align: center;">
           </div>
         </td>
-      </tr>`;
+      </tr>
 
-  template2 += metadata_render(i, metadata_Std);
-  template2 += `</table>`;
-  template2 +=  `<div><input type="checkbox" data-role="switch" data-caption="Advanced Settings" id="advanced${i}" objectseq="${i}" ></div>`
-  template2 +=  `<div data-role="collapse" data-collapsed="true" data-toggle-element="#advanced${i}" id="collapsediv${i}">`
-  template2 +=  `<table class="table striped compact">`
-  template2 += metadata_render(i, metadata_Adv);
-  template2 += `</table></div>`;
-
-  $('#statusBody2').html(template2);
-
-  $('#statusFooter').html(
-    `<table class="table compact">
       <tr>
+        <td>Type of cut: </td>
         <td>
-          <button class="button secondary" style="width: 200px;" id="toolprf_ID_StoreAsProfile" onclick="toolprf_action_StoreAsProfile()">Store As Profile</button>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fa fa-wrench fa-fw" aria-hidden="true"></i></span>
+            <select class="cam-form-field cam-form-field-right active-border camOperationSelect" id="toperation${i}" objectseq="${i}" style="width: 350px; border-left: solid 1px #ccc; padding: 0px; padding-left: 10px;">
+              <option>... Select Operation ...</option>
+              <optgroup label="Drilling Operations" class="camOptgroup">
+                <option class="camOption">Drill: Peck (Centered)</option>
+                <option class="camOption">Drill: Continuous (Centered)</option>
+              </optgroup>
+              <optgroup label="Milling/Routing Operations" class="camOptgroup">
+                <option class="camOption">CNC: Vector (no offset)</option>
+                <option class="camOption">CNC: Vector (path inside)</option>
+                <option class="camOption">CNC: Vector (path outside)</option>
+                <option class="camOption">CNC: Pocket</option>
+              </optgroup>
+              <optgroup label="Laser Operations" class="camOptgroup">
+                <option class="camOption">Laser: Vector (no path offset)</option>
+                <option class="camOption">Laser: Vector (path inside)</option>
+                <option class="camOption">Laser: Vector (path outside)</option>
+                <option class="camOption">Laser: Vector (raster fill) (Beta)</option>
+              <!--option class="camOption">CNC: V-Engrave</option-->
+              </optgroup>
+              <optgroup label="Plasma Operations" class="camOptgroup">
+                <option class="camOption">Plasma: Vector (path outside)</option>
+                <option class="camOption">Plasma: Vector (path inside)</option>
+                <option class="camOption">Plasma: Vector (no path offset)</option>
+              </optgroup>
+              <optgroup label="Other" class="camOptgroup">
+                <option class="camOption">Drag Knife: Cutout</option>
+                <option class="camOption">Pen Plotter: (no offset)</option>
+                <option class="camOption">Pen Plotter: (path inside)</option>
+                <option class="camOption">Pen Plotter: (path outside)</option>
+                <option class="camOption">Pen Plotter: (lines fill)</option>
+              </optgroup>
+            </select>
+          </div>
         </td>
-        <td id="toolprf_ID_ApplyProfile">
-          <div  class="input-addon">
-            <button class="button secondary dropdown-toggle" style="width: 200px;" id="toolprf_ButApplyProfile" onclick="toolprf_action_ApplyProfile()">Apply A Profile</button>
-            <ul class="d-menu context drop-shadow" data-role="dropdown" data-duration="100" id="appToolProfilemenu"
-              data-toggle-element="#toolprf_ButApplyProfile" data-role="dropdown" style="width: max-content; display: block;">
-            </ul>
+
+      </tr>
+    </table>
+    <table class="table striped compact">
+      <tr class="inputcnc inputpocket inputtooldia inputdrill inputplotter">
+        <td>Endmill / Pen Diameter</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><img class="fa-fw" src="images/endmilldia.svg" width="16px" height="16px"></img></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="6.35" id="ttooldia${i}"  objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
           </div>
         </td>
       </tr>
-      <tr>
+      <tr class="inputpocket">
+        <td>Stepover</td>
         <td>
-          <button type="button" id="previewToolpathBtn" style="width: 200px;" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button>
-        </td>
-        <td>
-          <button class="button js-dialog-close" style="width: 200px;">Close</button>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><img class="fa-fw" src="images/endmilldia.svg" width="16px" height="16px"></img></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="40" id="tstepover${i}"  objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">%</span>
+          </div>
         </td>
       </tr>
-    </table>`
-  );
+      <tr class="inputcnc  inputpocket inputplasma inputdragknife inputlaser inputlaserraster inputdrill">
+        <td>Z Safe Height</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-arrows-alt-v fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="10" id="tclearanceHeight${i}"  objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputdragknife">
+        <td>Drag Knife: Center Offset</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><img class="fa-fw" src="images/dragoffset.svg" width="16px" height="16px"></img></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="1" id="tdragoffset${i}"  objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputlaser inputlaserraster">
+        <td>Laser: Power</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-tachometer-alt fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="100" id="tpwr${i}" objectseq="${i}" min="1" max="100" step="any">
+            <span class="input-addon-label-right active-border">%</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputlaser inputlaserraster inputpenraster">
+        <td>Laser: Kerf / Line Spacing</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><img class="fa-fw" src="images/kerf.svg" width="16px" height="16px"></img></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="0.1" id="tspotsize${i}" objectseq="${i}" min="0.1" max="5" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputlaserraster inputpenraster">
+        <td>Fill: Angle</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><img class="fa-fw" src="images/protractor.svg" width="16px" height="16px"></img></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="0" id="tfillAngle${i}" objectseq="${i}" min="0.1" max="5" step="any">
+            <span class="input-addon-label-right active-border">deg</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc inputpocket inputdrillpeck">
+        <td>Cut Depth: per Pass</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-sort-amount-down fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" id="tzstep${i}" value="1" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc inputpocket inputdrill">
+        <td>Cut Depth: Final</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-level-down-alt fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" id="tzdepth${i}" value="6" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc inputpocket inputdragknife inputlaser inputlaserraster inputplasma inputplotter inputpenraster">
+        <td>Feedrate (X/Y)</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-exchange-alt fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="1000" id="tspeed${i}" objectseq="${i}" min="0" step="any" >
+            <span class="input-addon-label-right active-border">mm/min</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc inputpocket inputdrill">
+        <td>Feedrate: Plunge</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-exchange-alt fa-fw" data-fa-transform="rotate-90" ></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="300" id="tplungespeed${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm/min</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputplasma">
+        <td>Plasma: Kerf</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><img class="fa-fw" src="images/kerf.svg" width="16px" height="16px"></img></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="1.2" id="tplasmakerf${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputplasma">
+        <td>Plasma: Pierce Height</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-meteor fa-fw" data-fa-transform="rotate--45"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="4" id="tplasmapierceheight${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputplasma">
+        <td>Plasma: Pierce Delay</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="far fa-clock fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="1.5" id="tplasmapiercedelay${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">seconds</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputplasma">
+        <td>Plasma: Cut Height</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-arrows-alt-v fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="1.5" id="tplasmazheight${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputplasma">
+        <td>Plasma: Lead-In Distance</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-drafting-compass fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="5" id="tplasmaleadin${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputplasma">
+        <td>Plasma: Touch-Off Zero</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="far fa-arrow-alt-circle-down fa-fw"></i></span>
+            <select class="cam-form-field cam-form-field-right active-border" id="tplasmaihs${i}" objectseq="${i}" style="width: 280px; border-left: solid 1px #ccc; padding: 0px; padding-left: 10px;">
+              <option selected>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputplotter inputpenraster">
+        <td>Plotter: Pen Up</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="far fa-edit fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="255" id="tpenup${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">M3Sxxx</span>
+          </div>
+        </td>
+      </tr>
 
+      <tr class="inputplotter inputpenraster">
+        <td>Plotter: Pen Down</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-edit fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="0" id="tpendown${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">M3Sxxx</span>
+          </div>
+        </td>
+      </tr>
+
+      </table>
+
+
+    <div>
+      <input type="checkbox" data-role="switch" data-caption="Advanced Settings" id="advanced${i}" objectseq="${i}" >
+    </div>
+    <div data-role="collapse" data-collapsed="true" data-toggle-element="#advanced${i}" id="collapsediv${i}">
+
+    <table class="table striped compact">
+      <tr class="inputlaser inputlaserraster">
+        <td>Muliple passes:</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-sort-amount-down fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="1" id="tPasses${i}"  objectseq="${i}" min="1" step="any">
+            <span class="input-addon-label-right active-border">x</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc inputpocket">
+        <td>Cutting Direction:</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-compress fa-fw"></i></span>
+            <select class="cam-form-field cam-form-field-right active-border" id="tdirection${i}" objectseq="${i}" style="width: 280px; border-left: solid 1px #ccc; padding: 0px; padding-left: 10px;">
+              <option selected>Climb</option>
+              <option>Conventional</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputplasma inputcnc inputpocket inputdragknife inputlaser inputlasernooffset">
+        <td>Geometry: Merge</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-compress fa-fw"></i></span>
+            <select class="cam-form-field cam-form-field-right active-border" id="tunion${i}" objectseq="${i}" style="width: 280px; border-left: solid 1px #ccc; padding: 0px; padding-left: 10px;">
+              <option selected>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc inputpocket">
+        <td>
+          Plunge: Ramp In<br>
+          <div class="text-small">[beta] Experimental!</div>
+        </td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-ruler fa-fw"></i></span>
+            <select class="cam-form-field cam-form-field-right active-border" id="tRampPlunge${i}" objectseq="${i}" style="width: 280px; border-left: solid 1px #ccc; padding: 0px; padding-left: 10px;">
+              <option selected>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc inputpocket ">
+        <td>Cut Depth: Start</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-indent fa-fw" data-fa-transform="rotate-90" ></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="0" id="tstartHeight${i}"  objectseq="${i}" min="1" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc">
+        <td>Tabs: Height</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-text-height fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="0" id="tabdepth${i}" objectseq="${i}" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc">
+        <td>Tabs: Width</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-text-width fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="6" id="tabWidth${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="inputcnc">
+        <td>Tabs: Spacing</td>
+        <td>
+          <div class="input-addon">
+            <span class="input-addon-label-left active-border"><i class="fas fa-ruler-horizontal fa-fw"></i></span>
+            <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border" value="50" id="tabSpace${i}" objectseq="${i}" min="0" step="any">
+            <span class="input-addon-label-right active-border">mm</span>
+          </div>
+        </td>
+      </tr>
+
+    </table>
+  </div>`
+  $('#statusBody2').html(template2);
+  $('#statusFooter').html(`<button type="button" id="previewToolpathBtn" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button><button class="button js-dialog-close">Close</button>`);
   noMode(); // Default to NOOP
   $("#tOpName" + i).focus()
   Metro.init();
-
 
   var closedVectors = 0
   var openVectors = 0
@@ -467,34 +775,9 @@ function setupJob(i) {
                   'camZStep', 'camZDepth', 'camFeedrate', 'camPlungerate', 'camPlasmaKerf', 'camPlasmaZHeight', 'camPlasmaPierceHeight', 'camPlasmaPierceDelay',
                   'camPlasmaLeadinDist', 'camTabDepth', 'camTabWidth', 'camTabSpace', 'camPenUp', 'camPenDown'];
 
-    metadata_ApplyValues(i, CamIDs , toolpathsInScene[i].userData)
-
     $('#toperation' + i).val(toolpathsInScene[i].userData.camOperation).prop('selected', true)
 
-    // $('#tPasses' + i).val(toolpathsInScene[i].userData.camPasses);
-    // $('#toperation' + i).val(toolpathsInScene[i].userData.camOperation).prop('selected', true)
-    // $('#ttooldia' + i).val(toolpathsInScene[i].userData.camToolDia);
-    // $('#tstepover' + i).val(toolpathsInScene[i].userData.camStepover);
-    // $('#tclearanceHeight' + i).val(toolpathsInScene[i].userData.camZClearance);
-    // $('#tstartHeight' + i).val(toolpathsInScene[i].userData.camZStart);
-    // $('#tdragoffset' + i).val(toolpathsInScene[i].userData.camDragOffset);
-    // $('#tspotsize' + i).val(toolpathsInScene[i].userData.camSpotSize);
-    // $('#tfillAngle' + i).val(toolpathsInScene[i].userData.camFillAngle);
-    // $('#tpwr' + i).val(toolpathsInScene[i].userData.camLaserPower);
-    // $('#tzstep' + i).val(toolpathsInScene[i].userData.camZStep);
-    // $('#tzdepth' + i).val(toolpathsInScene[i].userData.camZDepth);
-    // $('#tspeed' + i).val(toolpathsInScene[i].userData.camFeedrate);
-    // $('#tplungespeed' + i).val(toolpathsInScene[i].userData.camPlungerate);
-    // $('#tplasmakerf' + i).val(toolpathsInScene[i].userData.camPlasmaKerf);
-    // $('#tplasmazheight' + i).val(toolpathsInScene[i].userData.camPlasmaZHeight);
-    // $('#tplasmapierceheight' + i).val(toolpathsInScene[i].userData.camPlasmaPierceHeight);
-    // $('#tplasmapiercedelay' + i).val(toolpathsInScene[i].userData.camPlasmaPierceDelay);
-    // $('#tplasmaleadin' + i).val(toolpathsInScene[i].userData.camPlasmaLeadinDist);
-    // $('#tabdepth' + i).val(toolpathsInScene[i].userData.camTabDepth);
-    // $('#tabWidth' + i).val(toolpathsInScene[i].userData.camTabWidth);
-    // $('#tabSpace' + i).val(toolpathsInScene[i].userData.camTabSpace);
-    // $('#tpenup' + i).val(toolpathsInScene[i].userData.camPenUp);
-    // $('#tpendown' + i).val(toolpathsInScene[i].userData.camPenDown);
+    metadata_ApplyValues(i, CamIDs , toolpathsInScene[i].userData)
 
     if (toolpathsInScene[i].userData.tRampPlunge) {
       $('#tRampPlunge' + i).val(toolpathsInScene[i].userData.tRampPlunge).prop('selected', true);
@@ -504,11 +787,9 @@ function setupJob(i) {
     $('#tplasmaihs' + i).val(toolpathsInScene[i].userData.camPlasmaIHS).prop('selected', true);
     $('#tunion' + i).val(toolpathsInScene[i].userData.camUnion).prop('selected', true);
     $('#tdirection' + i).val(toolpathsInScene[i].userData.camDirection).prop('selected', true);
-    debugger
     $('#tOpName' + i).val(toolpathsInScene[i].name);
     $('#statusTitle').html('Configure Toolpath: ' + toolpathsInScene[i].userData.camOperation);
     $('#advanced' + i).prop('checked', toolpathsInScene[i].userData.advanced);
-
     if (toolpathsInScene[i].userData.advanced) {
       setTimeout(function() {
         $(`#advanced${i}`).prop('checked', true);
@@ -520,7 +801,6 @@ function setupJob(i) {
         $('#collapsediv' + i).data("collapse")['collapse']()
       }, 200);
     }
-
     typeofOperation(toolpathsInScene[i].userData.camOperation, i);
   } else {
     // if we don't already have an Operation, perhaps we can pull from last-used values to make it easier
@@ -534,44 +814,8 @@ function setupJob(i) {
       metadata_ApplyValues(i, Lastused_Std , lastused)
 
     }
-
-    // if (lastused) {
-    //     // console.log(lastused)
-    //     $('#ttooldia' + i).val(lastused.camToolDia);
-    //     $('#tstepover' + i).val(lastused.camStepover);
-    //     $('#tclearanceHeight' + i).val(lastused.camZClearance);
-    //     $('#tdragoffset' + i).val(lastused.camDragOffset);
-    //     $('#tspotsize' + i).val(lastused.camSpotSize);
-    //     $('#tfillAngle' + i).val(lastused.camFillAngle);
-    //     $('#tpwr' + i).val(lastused.camLaserPower);
-    //     $('#tzstep' + i).val(lastused.camZStep);
-    //     $('#tzdepth' + i).val(lastused.camZDepth);
-    //     $('#tspeed' + i).val(lastused.camFeedrate);
-    //     $('#tplungespeed' + i).val(lastused.camPlungerate);
-    //     $('#tplasmakerf' + i).val(lastused.camPlasmaKerf);
-    //     $('#tplasmazheight' + i).val(lastused.camPlasmaZHeight);
-    //     $('#tplasmapierceheight' + i).val(lastused.camPlasmaPierceHeight);
-    //     $('#tplasmapiercedelay' + i).val(lastused.camPlasmaPierceDelay);
-    //     $('#tplasmaleadin' + i).val(lastused.camPlasmaLeadinDist);
-    //     $('#tstartHeight' + i).val(lastused.camZStart);
-    //     $('#tPasses' + i).val(lastused.camPasses);
-    //     $('#tplasmaihs' + i).val(lastused.camPlasmaIHS);
-    //     // $('#tunion' + i).val(lastused.camUnion);
-    //     $('#tdirection' + i).val(lastused.camDirection);
-    //     $('#tspotsize' + i).val(lastused.camSpotSize);
-    //     $('#tfillAngle' + i).val(lastused.camFillAngle);
-    //     //$('#tabdepth' + i).val(lastused.camTabDepth);
-    //     //$('#tabWidth' + i).val(lastused.camTabWidth);
-    //     //$('#tabSpace' + i).val(lastused.camTabSpace);
-    //     //$('#tRampPlunge' + i).val(lastused.tRampPlunge);
-    //     $('#tpenup' + i).val(lastused.camPenUp);
-    //     $('#tpendown' + i).val(lastused.camPenDown);
-    // }
   };
 }
-
-
-
 
 function noMode(i) {
   $('.inputcnc').hide();

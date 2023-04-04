@@ -18,7 +18,7 @@ $(document).ready(function() {
   initLocalStorage();
   init3D();
   animate();
-  errorHandlerJS(); // Disabled Reset for Production (danfrechette)
+  errorHandlerJS();
   initTree();
   initAdvancedCAM();
   initMouseSelect();
@@ -97,6 +97,14 @@ $(document).ready(function() {
   }).fail(function() {
     loadLastClosedOnPageload()
   });
+
+
+
+
+
+
+
+
 }); // End of document.ready
 
 // Error handling
