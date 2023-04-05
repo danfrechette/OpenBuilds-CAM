@@ -3,11 +3,11 @@ let metadata = {
   'camOperation'         :{'tmpl':5, 'rank':  1, 'id':"toperation"},
   'camToolDia'           :{'tmpl':1, 'rank':  2, 'id':"ttooldia", 'title': "Endmill / Pen Diameter", 'defval': "6.35", 'imgsrc':"images/endmilldia.svg", 'units': "mm", 'tr_class': "inputcnc inputpocket inputtooldia inputdrill inputplotter", 'min': 0 },
   'camStepover'          :{'tmpl':1, 'rank':  3, 'id':"tstepover",'title': "Stepover", 'defval': "40", 'imgsrc':"images/endmilldia.svg", 'units': "%", 'tr_class': "inputpocket", 'min': 0},
-  'camZClearance'        :{'tmpl':2, 'rank':  4, 'id':"tclearanceHeight", 'title': "Z Safe Heigh", 'defval': "10", 'icon':"fas fa-arrows-alt-v fa-fw", 'units': "mm", 'tr_class': "inputcnc  inputpocket inputplasma inputdragknife inputlaser inputlaserraster inputdrill", 'min': 0, },
+  'camZClearance'        :{'tmpl':2, 'rank':  4, 'id':"tclearanceHeight", 'title': "Z Safe Height", 'defval': "10", 'icon':"fas fa-arrows-alt-v fa-fw", 'units': "mm", 'tr_class': "inputcnc  inputpocket inputplasma inputdragknife inputlaser inputlaserraster inputdrill", 'min': 0, },
   'camDragOffset'        :{'tmpl':1, 'rank':  5, 'id':"tdragoffset", 'title': "Drag Knife: Center Offset", 'defval': "1", 'imgsrc':"images/dragoffset.svg", 'units': "mm", 'tr_class': "inputdragknife", 'min': 0 },
   'camLaserPower'        :{'tmpl':2, 'rank':  6, 'id':"tpwr", 'title': "Laser: Power", 'defval': "100", 'icon':"fas fa-tachometer-alt fa-fw", 'units': "%", 'tr_class': "inputlaser inputlaserraster", 'min': 1, 'max': 100, },
   'camSpotSize'          :{'tmpl':1, 'rank':  7, 'id':"tspotsize", 'title': "Laser: Kerf / Line Spacing", 'defval': "0.1", 'imgsrc':"images/kerf.svg", 'units': "mm", 'tr_class': "inputlaser inputlaserraster inputpenraster", 'min': 0.1 , 'max': 5},
-  'camFillAngle'         :{'tmpl':1, 'rank':  8, 'id':"tfillAngle", 'title': "", 'defval': "0", 'imgsrc':"images/protractor.svg", 'units': "deg", 'tr_class': "inputlaserraster inputpenraster", 'min': 0.1 , 'max': 5 },
+  'camFillAngle'         :{'tmpl':1, 'rank':  8, 'id':"tfillAngle", 'title': "Fill: Angle", 'defval': "0", 'imgsrc':"images/protractor.svg", 'units': "deg", 'tr_class': "inputlaserraster inputpenraster", 'min': 0.1 , 'max': 5 },
   'camZStep'             :{'tmpl':2, 'rank':  9, 'id':"tzstep", 'title': "Cut Depth: per Pass", 'defval': "1", 'icon':"fas fa-sort-amount-down fa-fw", 'units': "mm", 'tr_class': "inputcnc inputpocket inputdrillpeck", 'min': 0 },
   'camZDepth'            :{'tmpl':2, 'rank': 10, 'id':"tzdepth", 'title': "Cut Depth: Final", 'defval': "6", 'units':"mm", 'icon': "fas fa-level-down-alt fa-fw", 'tr_class': "inputcnc inputpocket inputdrill", 'min':0},
   'camFeedrate'          :{'tmpl':2, 'rank': 11, 'id':"tspeed", 'title': "Feedrate (X/Y)", 'defval': "1000", 'icon':"fas fa-exchange-alt fa-fw", 'units': "mm/min", 'tr_class': "inputcnc inputpocket inputdragknife inputlaser inputlaserraster inputplasma inputplotter inputpenraster", 'min': 0 },
@@ -21,12 +21,12 @@ let metadata = {
   'camPenUp'             :{'tmpl':2, 'rank': 19, 'id':"tpenup", 'title': "Plotter: Pen Up", 'defval': "255", 'icon':"far fa-edit fa-fw", 'units': "M3Sxxx", 'tr_class': "inputplotter inputpenraster", 'min': 0},
   'camPenDown'           :{'tmpl':2, 'rank': 20, 'id':"tpendown", 'title': "Plotter: Pen Down", 'defval': "0", 'icon':"fas fa-edit fa-fw", 'units': "M3Sxxx", 'tr_class': "inputplotter inputpenraster", 'min': 0},
   'advanced'             :{'tmpl':4, 'rank': 21, 'id':"advanced"},
-  'camPasses'            :{'tmpl':2, 'rank': 22, 'id':"tPasses", 'title': "tPasses", 'defval': "1", 'icon':"fas fa-sort-amount-down fa-fw", 'units': "x", 'tr_class': "inputlaser inputlaserraster", 'min': 1},
+  'camPasses'            :{'tmpl':2, 'rank': 22, 'id':"tPasses", 'title': "Muliple passes:", 'defval': "1", 'icon':"fas fa-sort-amount-down fa-fw", 'units': "x", 'tr_class': "inputlaser inputlaserraster", 'min': 1},
   'camDirection'         :{'tmpl':3, 'rank': 23, 'id':"tdirection", 'title': "Cutting Direction:", 'defval': "Climb", 'icon':"fas fa-compress fa-fw", 'tr_class': "inputcnc inputpocket", 'option': ['Climb', 'Conventional'] },
   'camUnion'             :{'tmpl':3, 'rank': 24, 'id':"tunion", 'title': "Geometry: Merge", 'defval': "No", 'icon':"fas fa-compress fa-fw", 'tr_class': "inputplasma inputcnc inputpocket inputdragknife inputlaser inputlasernooffset", 'option':['No', 'Yes'] },
   'tRampPlunge'          :{'tmpl':3, 'rank': 25, 'id':"tRampPlunge", 'title': "Plunge: Ramp In<br><div class=\"text-small\">[beta] Experimental!</div>", 'defval': "No", 'icon':"fas fa-ruler fa-fw", 'tr_class': "inputcnc inputpocket", 'option':['No', 'Yes'] },
   'camZStart'            :{'tmpl':2, 'rank': 26, 'id':"tstartHeight", 'title': "Cut Depth: Start", 'defval': "0", 'icon':"fas fa-indent fa-fw", 'iconrot': 90, 'units': "mm", 'tr_class': "inputcnc inputpocket", 'min': 1},
-  'camTabDepth'          :{'tmpl':2, 'rank': 27, 'id':"tabdepth", 'title': "Tabs: Height", 'defval': "0", 'icon':"fas fa-text-height fa-fw", 'units': "mm", 'tr_class': "inputcnc"},
+  'camTabDepth'          :{'tmpl':2, 'rank': 27, 'id':"tabdepth", 'title': "Tabs: Height", 'defval': "0", 'icon':"fas fa-text-height fa-fw", 'units': "mm", 'tr_class': "inputcnc", 'min':0},
   'camTabWidth'          :{'tmpl':2, 'rank': 28, 'id':"tabWidth", 'title': "Tabs: Width", 'defval': "6", 'icon':"fas fa-text-width fa-fw", 'units': "mm", 'tr_class': "inputcnc", 'min': 0},
   'camTabSpace'          :{'tmpl':2, 'rank': 29, 'id':"tabSpace", 'title': "Tabs: Spacing", 'defval': "50", 'icon':"fas fa-ruler-horizontal fa-fw", 'units': "mm", 'tr_class': "inputcnc", 'min': 0},
 };
@@ -80,7 +80,7 @@ function profTmpl_Options(i, elem, tlprof=false){
         </span>
         <select class="cam-form-field cam-form-field-right active-border" id="${elem.id}${i}" objectseq="${i}"
                 style="width: -webkit-fill-available; border-left: solid 1px #ccc; padding: 0px; padding-left: 10px;">` +
-          elem.option.map( a => a= "<option" + (a == elem.defval ? ` selected>${a}` : `>` + a ) + `</option>` ) +
+                elem.option.map( a => a= "<option" + (a == elem.defval ? ` selected>${a}` : `>` + a ) + `</option>` ).toString().replaceAll('>,<','><') +
         `</select>`
         + incToggle(tlprof, elem.id) +
     `</div></td></tr>`;
@@ -95,11 +95,11 @@ function profTmpl_CutType(i, elem, tlprof=false){
       <div class="input-addon">
         <span class="icon input-addon-label-left active-border"><i class="fa fa-wrench fa-fw" aria-hidden="true"></i></span>
         <select
-          id="${elem.id}${i}"
-          title="Type of Cut"
           class="cam-form-field cam-form-field-right active-border camOperationSelect"
-          objectseq=""
+          id="${elem.id}${i}"
+          objectseq="${i}"
           style="width: 100%; border-left: solid 1px #ccc; padding: 0px; padding-left: 10px;"
+          title="Type of Cut"
         >
           <option>... Select Operation ...</option>
           <optgroup label="Drilling Operations" class="camOptgroup">
@@ -165,6 +165,7 @@ function metadata_render(i, items, tlprof=false){
   });
   return str;
 };
+
 
 function metadata_ApplyValues(i, items, userData){
   items.forEach( function (a){
