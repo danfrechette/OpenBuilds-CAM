@@ -400,7 +400,7 @@ function setupJob(i) {
         <td>
           <div class="input-addon">
             <span class="input-addon-label-left active-border"><i class="far fa-edit fa-fw"></i></span>
-            <input data-role="input" autofocus type="text" class="cam-form-field cam-form-field-right active-border" value="` + toolpathsInScene[i].name + `" id="tOpName${i}"  objectseq="${i}" min="0" style="text-align: center;">
+            <input data-role="input" autofocus type="text" class="cam-form-field cam-form-field-right active-border" value="${toolpathsInScene[i].name}" id="tOpName${i}"  objectseq="${i}" min="0" style="text-align: center;">
           </div>
         </td>
       </tr>
@@ -743,8 +743,10 @@ function setupJob(i) {
 
     </table>
   </div>`
+
   $('#statusBody2').html(template2);
   $('#statusFooter').html(`<button type="button" id="previewToolpathBtn" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button><button class="button js-dialog-close">Close</button>`);
+
   noMode(); // Default to NOOP
   $("#tOpName" + i).focus()
   Metro.init();
