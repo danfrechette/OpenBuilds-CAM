@@ -3,7 +3,7 @@ let metadata = {
   'camOperation'         :{'tmpl':5, 'rank':  1, 'id':"toperation"},
   'camToolDia'           :{'tmpl':1, 'rank':  2, 'id':"ttooldia", 'title': "Endmill / Pen Diameter", 'defval': "6.35", 'imgsrc':"images/endmilldia.svg", 'units': "mm", 'tr_class': "inputcnc inputpocket inputtooldia inputdrill inputplotter", 'min': 0 },
   'camStepover'          :{'tmpl':1, 'rank':  3, 'id':"tstepover",'title': "Stepover", 'defval': "40", 'imgsrc':"images/endmilldia.svg", 'units': "%", 'tr_class': "inputpocket", 'min': 0},
-  'camZClearance'        :{'tmpl':2, 'rank':  4, 'id':"tclearanceHeight", 'title': "Z Safe Height", 'defval': "10", 'icon':"fas fa-arrows-alt-v fa-fw", 'units': "mm", 'tr_class': "inputcnc  inputpocket inputplasma inputdragknife inputlaser inputlaserraster inputdrill", 'min': 0, },
+  'camZClearance'        :{'tmpl':2, 'rank':  4, 'id':"tclearanceHeight", 'title': "Z Safe Height", 'defval': "10", 'icon':"fas fa-arrows-alt-v fa-fw", 'units': "mm", 'tr_class': "inputcnc inputpocket inputplasma inputdragknife inputlaser inputlaserraster inputdrill", 'min': 0, },
   'camDragOffset'        :{'tmpl':1, 'rank':  5, 'id':"tdragoffset", 'title': "Drag Knife: Center Offset", 'defval': "1", 'imgsrc':"images/dragoffset.svg", 'units': "mm", 'tr_class': "inputdragknife", 'min': 0 },
   'camLaserPower'        :{'tmpl':2, 'rank':  6, 'id':"tpwr", 'title': "Laser: Power", 'defval': "100", 'icon':"fas fa-tachometer-alt fa-fw", 'units': "%", 'tr_class': "inputlaser inputlaserraster", 'min': 1, 'max': 100, },
   'camSpotSize'          :{'tmpl':1, 'rank':  7, 'id':"tspotsize", 'title': "Laser: Kerf / Line Spacing", 'defval': "0.1", 'imgsrc':"images/kerf.svg", 'units': "mm", 'tr_class': "inputlaser inputlaserraster inputpenraster", 'min': 0.1 , 'max': 5},
@@ -43,7 +43,7 @@ function template_01(i, elem, tlprof=false){
     <td><div class="input-addon">
         <span class="icon input-addon-label-left active-border"><img class="fa-fw" src="${elem.imgsrc}" width="16px" height="16px"></img></span>
         <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border"
-          value = "${elem.defval}" id = "${elem.id}${i}" objectseq = "${i}" min = "${elem.min}"` +
+          value="${elem.defval}" id="${elem.id}${i}" objectseq="${i}" min="${elem.min}"` +
           (elem.hasOwnProperty('max') ? ` max ="${elem.max}"` : '') +  `  step="any">
         <span class="input-addon-label-right active-border">${elem.units}</span>`
         //+ (tlprof ? `<span id="toolprf_TID_${elem.id}" class="input-addon-label-right active-border"><span class="fa fa-toggle-off"></span></span>` : ``) +
@@ -61,9 +61,8 @@ function template_02(i, elem, tlprof=false){
           <i class="${elem.icon}"` + (elem.hasOwnProperty('iconrot') ? ` data-fa-transform="rotate-${elem.iconrot}"` : "") + `></i>
         </span>
         <input data-role="input" data-clear-button="false" type="number" class="cam-form-field active-border"
-          value = "${elem.defval}" id="${elem.id}${i}" objectseq="${i}" min="${elem.min}"` +
-          (elem.hasOwnProperty('max') ? `max ="${elem.max}"` : '') + `  step="any"
-        >
+          value="${elem.defval}" id="${elem.id}${i}" objectseq="${i}" min="${elem.min}"` +
+          (elem.hasOwnProperty('max') ? `max ="${elem.max}"` : '') + ` step="any">
         <span class="input-addon-label-right active-border">${elem.units}</span>`
         + incToggle(tlprof, elem.id) +
     `</div></td></tr>`;
@@ -131,9 +130,7 @@ function profTmpl_CutType(i, elem, tlprof=false){
             <option class="camOption">Pen Plotter: (path outside)</option>
             <option class="camOption">Pen Plotter: (lines fill)</option>
           </optgroup>
-        </select>`
-        + incToggle(tlprof, elem.id, false) +
-        `</div>
+        </select>${incToggle(tlprof, elem.id, false)}</div>
     </td>
   </tr>`;
   return str.replace(/\s{2}/g, '').trim();
@@ -410,15 +407,13 @@ function setupJob(i) {
     template2 += `</table>`;
     template2 += `<div><input type="checkbox" data-role="switch" data-caption="Advanced Settings" id="advanced${i}" objectseq="${i}" ></div>`
     template2 += `<div data-role="collapse" data-collapsed="true" data-toggle-element="#advanced${i}" id="collapsediv${i}">`
-    //template2 += `<!-- -------------------------------------------------------------------------------------------------------------------- -->`
     template2 += `<table class="table striped compact">`
     template2 += metadata_render(i, metadata_Adv);
     template2 += `</table>`
-    //template2 += `<!-- -------------------------------------------------------------------------------------------------------------------- -->`
     template2 += `</div>`;
 
     $('#statusBody2').html(template2);
-    drf_download(template2, 'Test1', 'txt')
+    drf_download(drf_format_html(template2), 'Test1', 'txt')
 
     $('#statusFooter').html(
       `<table class="table compact">
@@ -451,7 +446,6 @@ function setupJob(i) {
       <hr>
       <div id="toolpathWarnings"></div>
       <table class="table striped compact">
-
         <tr>
           <td>Name:</td>
           <td>
@@ -461,7 +455,6 @@ function setupJob(i) {
             </div>
           </td>
         </tr>
-
         <tr>
           <td>Type of cut: </td>
           <td>
@@ -501,7 +494,6 @@ function setupJob(i) {
               </select>
             </div>
           </td>
-
         </tr>
       </table>
       <table class="table striped compact">
@@ -801,7 +793,7 @@ function setupJob(i) {
       </table>
     </div>`
 
-    drf_download(template2, 'Test2', 'txt')
+    drf_download(drf_format_html(template2), 'Test2', 'txt')
     $('#statusBody2').html(template2);
     $('#statusFooter').html(`<button type="button" id="previewToolpathBtn" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button><button class="button js-dialog-close">Close</button>`);
   }
