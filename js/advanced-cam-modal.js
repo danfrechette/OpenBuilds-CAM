@@ -209,7 +209,7 @@ function typeofOperation(newval, objectseq) {
     penRasterMode(objectseq);
   }
   else{
-    console.log("No condition was found...... updateCamUserData should not trigger fix it...")
+    console.log("No Operation was found...... should not trigger fix it...")
   }
 
   updateCamUserData(objectseq);
@@ -234,7 +234,6 @@ function initAdvancedCAM() {
       } else {
         $('#svgZDepth').text(numPass + ' x ' + newval + 'mm');
       }
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tzdepth') == 0) {
       $('#svgZFinal').text(newval + 'mm');
       var numPass = Math.floor((parseFloat(newval) / parseFloat($('#tzstep' + objectseq).val())))
@@ -244,90 +243,64 @@ function initAdvancedCAM() {
       } else {
         $('#svgZDepth').text(numPass + ' x ' + $('#tzstep' + objectseq).val() + 'mm');
       }
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tspeed') == 0) {
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tplungespeed') == 0) {
-      updateCamUserData(objectseq);
     } else if (id.indexOf('ttooldia') == 0) {
       $('#svgToolDia').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tstepover') == 0) {
       $('#svgStepover').text(newval + '%');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tclearanceHeight') == 0) {
       $('#svgZClear-8').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tstartHeight') == 0) {
       $('#svgZStart').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tPasses') == 0) {
       // $('#svgZStart').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tdragoffset') == 0) {
       $('#dragKnifeRadius').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tspotsize') == 0) {
       $('#svgToolDia-4').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tfillAngle') == 0) {
       $('#svgToolDia-4').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tplasmakerf') == 0) {
       $('#svgPlasmaKerf').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tplasmazheight') == 0) {
       $('#svgPlasmaZHeight').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tplasmapierceheight') == 0) {
       $('#svgPlasmaPierceHeight').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tplasmapiercedelay') == 0) {
       $('#svgPlasmaPierceDelay').text(newval + 's');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tplasmaleadin') == 0) {
       $('#svgPlasmaLeadIn').text(newval + 'mm');
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tplasmaihs') == 0) {
       $('#svgPlasmaIHS').text(newval);
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tdirection') == 0) {
       // $('#svgPlasmaIHS').text(newval);
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tunion') == 0) {
       // $('#svgPlasmaIHS').text(newval);
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tabdepth') == 0) {
       $('#svgtabdepth').text(newval);
       // console.log("tabdepth")
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tabWidth') == 0) {
       $('#svgtawidth').text(newval);
       // console.log("tabWidth")
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tabSpace') == 0) {
       $('#svgtabspace').text(newval);
       // console.log("tabSpace")
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tOpName') == 0) {
       $('#svgOpName').text(newval);
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tRampPlunge') == 0) {
       $('#svgOpName').text(newval);
-      updateCamUserData(objectseq);
     } else if (id.indexOf('advanced') == 0) {
       // $('#svgUnion').text(newval);
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tpwr') == 0) {
       // $('#svgUnion').text(newval);
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tpendown') == 0) {
       // $('#svgUnion').text(newval);
-      updateCamUserData(objectseq);
     } else if (id.indexOf('tpenup') == 0) {
       // $('#svgUnion').text(newval);
-      updateCamUserData(objectseq);
     }
+
+    updateCamUserData(objectseq);
 
   });
 
@@ -384,6 +357,7 @@ function setupJob(i) {
   $('#statusTitle').html('Configure Toolpath: ');
   $('#statusBody').empty();
   $('#statusBody2').empty();
+  $('#statusFooter').empty();
 
   // $('#statusBody').html('' );
   if(true === true){
@@ -412,10 +386,7 @@ function setupJob(i) {
     template2 += `</table>`
     template2 += `</div>`;
 
-    $('#statusBody2').html(template2);
-    drf_download(drf_format_html(template2), 'Test1', 'txt')
-
-    $('#statusFooter').html(
+    var footertemplate =
       `<table class="table compact">
         <tr>
           <td>
@@ -439,7 +410,6 @@ function setupJob(i) {
           </td>
         </tr>
       </table>`
-    );
   } else {
     var template2 = `
       Configure the toolpath parameters:
@@ -793,10 +763,14 @@ function setupJob(i) {
       </table>
     </div>`
 
-    drf_download(drf_format_html(template2), 'Test2', 'txt')
-    $('#statusBody2').html(template2);
-    $('#statusFooter').html(`<button type="button" id="previewToolpathBtn" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button><button class="button js-dialog-close">Close</button>`);
+    var footertemplate =
+    `<button type="button" id="previewToolpathBtn" class="button success" onclick="toolpathPreview(${i}); fillTree();">Apply and Preview Toolpath </button>
+     <button class="button js-dialog-close">Close</button>`
   }
+
+  $('#statusBody2').html(template2);
+  $('#statusFooter').html(footertemplate);
+  // drf_download(drf_format_html(template2), 'Test', 'txt')
 
   noMode(); // Default to NOOP
   $("#tOpName" + i).focus()
